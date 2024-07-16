@@ -1,0 +1,160 @@
+body{
+    margin:0;
+    padding:0;
+    text-align:center;
+    font-size: 32px;
+    max-width:1200px;
+    margin: 0 auto;
+    padding: 0 4%;
+    background-color: #fffaf0;
+}
+header{
+
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    width: 1200px;
+    color: #a0522d;
+}
+
+main{
+    border-bottom:1px solid #ccc;
+}
+
+footer{
+    background-color: #fff;
+    border-bottom:1px solid #ccc;
+    text-align: center;
+}
+
+p{
+    font-size:100%;
+    text-align: center;
+    border-bottom:1px solid #fff;
+    /* height:200px; */
+    
+}
+
+ul {
+    list-style: none;
+}
+
+/* @media screen and (min-width: 481px) {
+
+ } */
+
+
+.annaunce {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+
+}
+
+.annaunce div {
+    color: orange;
+    text-align: center;
+    font-weight: bold;
+
+
+}
+
+.annaunce ul {
+    text-align: left;
+    /* color: black; */
+    background-color:#fff5ee;
+    padding: 30 30 30 60px;
+    font-size: 20px;
+    margin: 0 300px;
+    margin-bottom: 60px;
+
+}
+
+.janken {
+    position: relative;
+}
+
+.result {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    top: 40%;
+    left: 40%;
+    -ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+
+    background-color: #FFF;
+    /* padding-top: 30px; */
+    width: 1100px;
+    height: 400px;
+    
+
+  }
+
+  #result {
+    margin: 0 100px;
+  }
+
+.janken ul{
+    padding: 0;
+    /* border-top: 1px solid #000000; */
+    display:table;  /* 定義 */
+    table-layout: fixed;
+    width: 100%;
+    
+}
+.janken li{
+    text-align: center;
+    list-style-type:none;
+    border: 1px solid #666;
+    background-color: #FFF;
+    display:table-cell;  /* 定義 */
+    cursor: pointer;
+    width: 50%;
+}
+.janken li:hover{
+    /* background: #0066CC; */
+    /* color:#fff; */
+    /* transform: translateY(-10px); */
+    transform: scale(1.1);
+}
+
+.visual ul img{
+    width: 100%;
+}
+
+.top {
+    display: flex;
+    /* 中心がそろわない↓ */
+    justify-content: center; 
+    flex-direction: column;
+}
+
+.btn {
+    display:flex;
+    justify-content: center;
+}
+
+#result_btn {
+
+    /* margin: 0 0 1em; */
+    background-color: #ff891a;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+  
+    font-size:18px ;
+    width: 50%;
+    height: 10%;
+    text-align: center;
+    line-height: 60px;
+    /* margin: 50%; */
+  }
+
+
+  .hidden {
+    display: none;
+    background-color:none;
+  }
+

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+
+<body>
+
+<header>
+  <h1>じゃんけん</h1>
+</header>
+
+<main>
+
+<div class="janken">
+   <ul>
+    <li id="gu_btn">グー</li>
+    <li id="cho_btn">チョキ</li>
+    <li id="par_btn">パー</li>
+   </ul>
+</div>
+
+  <div class="visual"> 
+
+   <div class="top">
+      <ul>
+
+      <li><span id="user_hands"></span></li>
+      <li id="img_1"><img src="./img/sazaesann.img" alt=""></li>
+    
+    </ul>
+   
+    <ul>
+      <li><span id="pc_hands">一緒にじゃんけんしてみよう !</span></li>
+      <li id="img_2"></li>
+     
+    </ul>
+   </div>
+   
+   <span id="judgment">グー ・チョキ ・ パーを選んでね</span>
+
+
+  
+ <!-- <div>コンピュータの出した手は？「<span id="pc_hands">なに？</span>」</div> -->
+  <!-- <div id="judgment">勝ち</div> -->
+
+  <div>勝った回数「<span id="winning_count">0</span>回」
+    試合数「<span id="total_count">0</span>回」
+    </div>
+
+  <div>勝率「<span id="winning_rate">0</span>%」</div>
+</main>
+
+<footer></footer>
+
+<script>
+//じゃんけん用のSCRIPTを書いてください
+
+let i = 0; //勝負した回数
+let j = 0; //勝った回数
+
+
+// クリックアクション 「グー」
+$("#gu_btn").on ("click",function(){
+
+const r =Math.random()*3; //「3」を掛けることで、小数点繰り上げたときに数字が1～5になる
+const n = Math.ceil(r); //繰り上げ0.01→１を「n」に渡す
+console.log(n);
+i = i + 1;
+$("#user_hands").html("あなたが出した手は「グー」");
+$("#img_1").html('<img src="./img/gu.png">');
+
+
+if(n == 1){
+  j = j + 1;
+   $("#pc_hands").html("コンピューターの出した手は「チョキ」"); //
+   $("#judgment").css("color","#ff0000"); //文字を赤
+   $("#judgment").html("あなたの 勝ち!!!")
+   $("#img_2").html('<img src="./img/cho.png">');
+   // $("#echo").fadeOut(3000); //3秒たったらフェードアウト、さらに3秒たったらフェードイン
+
+}
+if(n == 2){
+   $("#pc_hands").html("コンピューターの出した手は「パー」");
+   $("#judgment").css("color","#0000ff"); //文字を青
+   $("#judgment").html("あなたの負け。。。")
+   $("#img_2").html('<img src="./img/pa.png">');
+   
+
+}
+
+if(n == 3){
+   $("#pc_hands").html("コンピューターの出した手は「グー」");
+   $("#judgment").css("color","#32cd32"); //文字を緑
+   $("#judgment").html("おっとあいこ！もう一回")
+   $("#img_2").html('<img src="./img/gu.png">');
+}
+
+
+$("#total_count").html(i);
+$("#winning_count").html(j);
+const o =Math.ceil(j/i*100)
+$("#winning_rate").html(o);
+
+
+})
+
+
+
+
+// クリックアクション 「チョキ」
+$("#cho_btn").on ("click",function(){
+
+const r =Math.random()*3; //「3」を掛けることで、小数点繰り上げたときに数字が1～5になる
+const n = Math.ceil(r); //繰り上げ0.01→１を「n」に渡す
+console.log(n);
+i = i + 1;
+$("#user_hands").html("あなたが出した手は「チョキ」");
+$("#img_1").html('<img src="./img/cho.png">');
+
+if(n == 1){
+  j = j + 1;
+   $("#pc_hands").html("コンピューターの出した手は「パー」"); //
+   $("#judgment").css("color","#ff0000"); //文字を赤
+   $("#judgment").html("あなたの 勝ち!!!")
+   $("#img_2").html('<img src="./img/pa.png">');
+   // $("#echo").fadeOut(3000); //3秒たったらフェードアウト、さらに3秒たったらフェードイン
+
+}
+if(n == 2){
+   $("#pc_hands").html("コンピューターの出した手は「グー」");
+   $("#judgment").css("color","#0000ff"); //緑
+   $("#judgment").html("あなたの負け。。。")
+   $("#img_2").html('<img src="./img/gu.png">');
+   
+
+}
+
+if(n == 3){
+   $("#pc_hands").html("コンピューターの出した手は「チョキ」");
+   $("#judgment").css("color","#32cd32"); //文字を緑
+   $("#judgment").html("おっとあいこ！もう一回")
+   $("#img_2").html('<img src="./img/cho.png">');
+}
+
+$("#total_count").html(i);
+$("#winning_count").html(j);
+const o =Math.ceil(j/i*100)
+$("#winning_rate").html(o);
+
+
+})
+
+// クリックアクション 「パー」
+$("#par_btn").on ("click",function(){
+
+const r =Math.random()*3; //「3」を掛けることで、小数点繰り上げたときに数字が1～5になる
+const n = Math.ceil(r); //繰り上げ0.01→１を「n」に渡す
+console.log(n);
+i = i + 1;
+$("#user_hands").html("あなたが出した手は「パー」");
+$("#img_1").html('<img src="./img/pa.png">');
+
+if(n == 1){
+  j = j + 1;
+   $("#pc_hands").html("コンピューターの出した手は「グー」"); //
+   $("#judgment").css("color","#ff0000"); //文字を赤
+   $("#judgment").html("あなたの勝ち！！！")
+   $("#img_2").html('<img src="./img/gu.png">');
+}
+if(n == 2){
+   $("#pc_hands").html("コンピューターの出した手は「チョキ」");
+   $("#judgment").css("color","#0000ff"); //青
+   $("#judgment").html("あなたの負け。。。")
+   $("#img_2").html('<img src="./img/cho.png">');
+   
+
+}
+
+if(n == 3){
+   $("#pc_hands").html("コンピューターの出した手は「パー」");
+   $("#judgment").css("color","#32cd32"); //文字を緑
+   $("#judgment").html("おっとあいこ！もう一回")
+   $("#img_2").html('<img src="./img/pa.png">');
+}
+
+$("#total_count").html(i);
+$("#winning_count").html(j);
+const o =Math.ceil(j/i*100)
+$("#winning_rate").html(o);
+
+
+})
+
+
+ 
+
+
+    
+    
+    
+    
+    
+    
+    
+
+</script>
+</body>
+</html>
