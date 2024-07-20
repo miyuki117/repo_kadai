@@ -29,13 +29,14 @@
 
 - [質問]
 - [感想]
+  - CSSは色や配置をいじるとすぐに反映されるので、慣れると楽しいなと思いました。
+  - 調べながら一つ一つ実装させる作業はかなり大変でしたが、時間をかけた分しっかりと自分の知識になったと思います。
 - [参考記事]
-  - 1. [URLをここに記入]
-  - 2. [URLをここに記入]
+  - 1.ヘッダー作成について [https://coeure.co.jp/blog/homepage/homepage_180501_05]
+  - 2.ヘッダーのレイアウト（flexbox） [https://webdesign-pg.com/gnav01-leftlogo-rightmenu]
+  - 3.flexboxの種類[https://www.asobou.co.jp/blog/web/flex-box]
+  - 4.画像の上に文字を乗せる方法[https://saruwakakun.com/html-css/reference/image-text]
+  - 5.余白(margin,padding)について[https://saruwakakun.com/html-css/basic/margin-padding]
+  
 
-### おまけ ※提出時はこのおまけは不要ですので削除してください
 
-キャプチャ画像を入れたい場合は以下のフォーマットを使用してみてください。その場合はキャプチャ画像用のフォルダを作成してその画像のパスを使用してみましょう。(srcフォルダなどを作ってみてもいいかもしれないです)
-![alt文](画像URL)
-例)
-![top page](./src/capture1.png)
