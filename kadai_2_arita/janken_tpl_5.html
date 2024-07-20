@@ -43,13 +43,13 @@
       <ul>
       <li id="gu_btn"><img src="./img/gu_2.png" alt=""></li>
       <li id="cho_btn"><img src="./img/cho_2.png" alt=""></li>
-      <li id="par_btn"><img src="./img/pa_2.png" alt=""></li>
+      <li id="pa_btn"><img src="./img/pa_2.png" alt=""></li>
       </ul>
       <!-- 結果ボタン押下後 -->
       <div id="result"  class="hidden">
 
          <!-- pcの結果テキスト -->
-         <div id="pc_hands"></div>
+         <div>コンピューターの出した手は<span id="pc_hands"></span></div>
          <!-- 勝負の結果イラスト -->
          <div id="img_2"></div>
          <!-- 増減したポイント数 -->
@@ -64,7 +64,7 @@
 
     <!-- 結果ボタン -->
    <div class="btn" >
-      <button id="result_btn"><span id ="btn_name">結果を見る</span></button>
+      <button id="result_btn"><span id ="btn_name">じゃんけんボタンを押してね</span></button>
    </div> 
 
 </main>
@@ -75,126 +75,158 @@
 <script>
 //じゃんけん用のSCRIPTを書いてください
 
-let a =0;
+
+// グローバル変数
 let i = 10; //ポイント数
-let j = 0; //勝った回数
-let k =0; //結果イラスト
-let l =0; //コンピューターの結果
-let m =0; //増減のポイント数
+let l =0; //コンピューターの手
 
 
 
+
+//グーボタンを押下
  $("#gu_btn").on ("click",function(){
- a =1 
- action();
+    console.log('自分はグー');
+    action(1);
 })
+
+//チョキボタンを押下
 $("#cho_btn").on ("click",function(){
- a =2 
- action();
+    console.log('自分はチョキ');
+    action(2);
+
 })
+
+//パーボタンを押下
 $("#pa_btn").on ("click",function(){
- action();
+   console.log('自分はパー');
+   action(3);
 })
 
 
-function action(){
+//勝敗を決める関数
+function battle(my_hand, pc_hand){
 
- i = i-1;
-const r =Math.random()*3; //「3」を掛けることで、小数点繰り上げたときに数字が1～5になる
-const n = Math.ceil(r); //繰り上げ0.01→１を「n」に渡す
-console.log(n);
-$("#btn_name").html("結果を見る");
+   // グー：1、チョキ：２、パー：３
+   if(my_hand == pc_hand){
+      let result = "draw";
+      return result;
+    }else if(my_hand ==1 && pc_hand ==2){// 自分がグーで、PCがチョキ
+      let result = "win";
+      return result;
 
+    }else if(my_hand ==1 && pc_hand ==3){  //自分がグーで、PCがパー
+      let result = "lose";
+      return result;
 
-if(i>=5){
+    }else if(my_hand ==2 && pc_hand ==1){   //自分がチョキで、PCがグー
+      let result = "lose";
+      return result;
 
-// 勝ち
-if(n == 1){
-   i = i + 2; //勝ったので２ポイント獲得
-   j = j+ 1; //勝ち数１追加
-   k ='<img src="./img/win.png">';
-   m= '2ポイント追加';
+    }else if(my_hand ==2 && pc_hand ==3){   //自分がチョキで、PCがパー
+      let result = "win";
+      return result;
 
-   if(a==1){
-      // ユーザーはグー
-      l ="コンピューターの出した手は「チョキ」"
+    }else if(my_hand ==3 && pc_hand ==1){   //自分がパーで、PCがグー
+      let result = "win";
+      return result;
+
+    }else if(my_hand ==3 && pc_hand ==2){   //自分がパーで、PCがチョキ
+      let result = "lose";
+      return result;
+
    }
-   if(a==2){
-      // ユーザーはチョキ
-      l ="コンピューターの出した手は「パー」"
-   }
-   if(a==3){
-      // ユーザーはパー
-      l ="コンピューターの出した手は「グー」"
-   }
-}
-
-//負け
-if(n == 2){
-   i = i -2; //負けなので２ポイント減る
-   k ='<img src="./img/lose.png">';
-   m= '2ポイント減る';
-
-   if(a==1){
-      // ユーザーはグー
-      l ="コンピューターの出した手は「パー」"
-   }
-
-   if(a==2){
-      // ユーザーはチョキ
-      l ="コンピューターの出した手は「グー」"
-   }
-
-   if(a==3){
-      // ユーザーはパー
-      l ="コンピューターの出した手は「チョキ」"
-   }
-}
-
-//引き分け
-if(n == 3){
-   i = i + 1; //相子なので２ポイント獲得
-   k ='<img src="./img/draw.png">';
-   m= '1ポイント追加';
-
-   if(a==1){
-      // ユーザーはグー
-      l ="コンピューターの出した手は「グー」"
-   }
-   if(a==2){
-      // ユーザーはチョキ
-      l ="コンピューターの出した手は「チョキ」"
-   }
-   if(a==3){
-      // ユーザーはパー
-      l ="コンピューターの出した手は「パー」"
-   }
-}
-
-}else{
-   alert("ポイントが足りません")
-   alert("ポイントをチャージしますか？")
-   i =i+10;
-   $("#point").html(i);
+   
 }
 
 
-$("#point").html(i);
-
+//手を選ぶと実行される関数
+function action(my_hand){
+   if(i>=5){
+      // 5ポイント以上ある
+      play(my_hand)
+   } else {
+     // 5ポイント未満
+      alert("ポイントが足りません")
+      alert("ポイントをチャージしますか？")
+      i =i+10;
+      $("#point").html(i);
+   }
 }
 
 
-$("#result_btn").on ("click",function(){
+
+function play(my_hand){
+
+   //１ポイント消費
+   i = i-1;
+   let test_value = 0
+
+   //乱数でPCの手を決める
+   const r =Math.random()*3; //「3」を掛けることで、小数点繰り上げたときに数字が1～5になる
+   const pc_hand = Math.ceil(r); //繰り上げ0.01→１を「n」に渡す
+  
+
+   //pcの手を判別する
+   //参考(switch):https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/switch
+   switch (pc_hand){
+      case 1:
+         l ="「グー」"
+         break;
+      case 2:
+         l ="「チョキ」"
+         break;
+      case 3:
+         l ="「パー」"
+         break;
+   }
+   
+   console.log(l);
+
+
+   //別関数で勝敗を取得する！
+   let result = battle(my_hand,pc_hand);
+
+   //case文で場合分けを表現してみる
+
+   // ローカル変数
+   let k =0; //結果イラスト
+   let m =0; //増減ポイント数
+
+   switch (result) {
+      //勝ち
+      case "win":
+         console.log("勝ったよ");
+         i = i + 2; //勝ったので２ポイント獲得
+         k ='<img src="./img/win.png">';
+         m= '2ポイント追加';
+         break;
+      //負け
+      case "lose":
+         console.log("負けたよ");
+         i = i -2; //負けなので２ポイント減る
+         k ='<img src="./img/lose.png">';
+         m= '2ポイント減る';
+         break;
+      // 引き分け
+      case "draw":
+         console.log("引き分けだよ");
+         i = i + 1; //相子なので２ポイント獲得
+         k ='<img src="./img/draw.png">';
+         m= '1ポイント追加';
+         break;
+   }
+
 
    $("#pc_hands").html(l);
-   $('#img_2').fadeIn(3000);
-   $("#img_2").html(k); 
-   $("#img_2").html(k);   
-   $("#result_point").html(m);
-   $("#point").html(i);
+      $('#img_2').fadeIn(3000);
+      $("#img_2").html(k); 
+      $("#result_point").html(m);
+      $("#point").html(i);
+   ToggleDisplay()
 
+   $("#result_btn").html("もう一度遊ぶ");                   
 
-})
+}
 
 // 結果ボタンを押したら表示にする
 const button = document.querySelector('#result_btn');
@@ -202,8 +234,11 @@ button.addEventListener('click',ToggleDisplay);
 
 function ToggleDisplay(){
    const result =document.querySelector('#result');
+
+   //参考： http:~
    result.classList.toggle('hidden');
    result.classList.toggle('result');
+   $("#result_btn").html("じゃんけんボタンを押してね");
 
 }
 
