@@ -1,6 +1,6 @@
 # ①課題番号-プロダクト名
 
-じゃんけんアプリ
+じゃんけんアプリのリッチバージョン
 
 ## ②課題内容（どんな作品か）
 
@@ -8,7 +8,7 @@
 
 ## ③DEMO
 
-デプロイしている場合はURLを記入（任意）
+https://aritatech.sakura.ne.jp/repo_kadai/kadai_3_arita/janken_tpl_6
 
 ## ④作ったアプリケーション用のIDまたはPasswordがある場合
 
