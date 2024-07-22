@@ -8,7 +8,7 @@
 
 ## ③DEMO
 
-デプロイしている場合はURLを記入（任意）
+https://aritatech.sakura.ne.jp/repo_kadai/kadai_2_arita/janken_tpl_4
 
 ## ④作ったアプリケーション用のIDまたはPasswordがある場合
 
