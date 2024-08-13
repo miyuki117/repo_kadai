@@ -30,6 +30,8 @@
         </select>
         <!-- checkボタン -->
         <input type="button" value="Check" id="checkButton"/>
+        <input type="button" value="delete" id="deleteButton"/>
+
 
 
         <!-- 例文を表示する -->
@@ -87,46 +89,51 @@
 
     // 参考：https://www.englishcentral.com/blog/ja/%E3%80%90%E6%B4%8B%E7%94%BB%E3%81%AE%E6%9C%89%E5%90%8D%E3%82%BB%E3%83%AA%E3%83%95%E3%80%91-%E6%B4%8B%E7%94%BB%E5%90%8D%E4%BD%9C%E3%81%AE%E5%8D%B0%E8%B1%A1%E7%9A%84%E3%81%AA%E3%82%BB%E3%83%AA%E3%83%95/
 
-    createElement();
+    // プルダウンで例文を表示させる
+     createElement();
 
 
 
-    // 関数：select要素のoptionを配列で作る
+     // 選択肢を作成する関数
         function createElement(key,type){
+            
             //ローカル変数examplesを宣言
             let examples= [
-            {val:'Back to the future',text:"Back to the future"},
-            {val:'Harry Potter',text:"Harry Potter"},
-            {val:'The Devil wears Prada',text:"The Devil wears Prada"} 
-             ];  
+                {id:'Back to the future',val:'Back to the future',text:"Back to the future"},
+                {id:'Harry Potter',val:'Harry Potter',text:"Harry Potter"},
+                {id:'The Devil wears Prada',val:'The Devil wears Prada',text:"The Devil wears Prada"} 
+            ];  
 
 
-
+            // デフォルトで例文を表示しておく
             if(key == null){
-                // デフォルトでsample1の例文を表示しておく
                 let selectedSample = localStorage.getItem("Back to the future");
                 const s =`<div>${selectedSample}</div>`
                 $("#selectedSample").append(s);
 
-              //セレクト文にオプションを追加する
+               //select文にoption追加
                 for(let i=0; i<examples.length; i++){
                 let op =document.createElement("option");
+                op.id = examples[i].id
                 op.value = examples[i].val; //value値
                 op.text =examples[i].text; //テキスト値
                 document.getElementById("samples").appendChild(op);
                 }
 
-                // console.log(samples);
+                console.log(samples);
 
+             // 要素の追加
             }else if(type== 1){
-             // 追加した要素をsamplesから選べるようにする
                 // examples.push( {val:key,text:key});
                 // console.log(examples);
                 // i++;
+
                 // option要素を追加
                 let op =document.createElement("option");
-                op.value = key; //value値
-                op.text = key; //テキスト値
+                // 必要な情報をセット
+                op.value = key; 
+                op.text = key; 
+                // 例文のプルダウンに追加
                 document.getElementById("samples").appendChild(op);
 
                 // console.log(examples);
@@ -134,9 +141,12 @@
             }else if(type== 0){
                 console.log(key);
 
-             // option要素を削除
-                let op =document.getElementById("samples");
-                op.remove(`'${key}'`); //.remove(value名)
+             // option要素の削除
+                document.getElementById("samples").remove(':contains('+key+')');
+                // $("#'"+key+"'").remove(); //できない
+                // delete examples [key]; //できない
+                // op.remove(`'${key}'`); //.remove(value名); 
+                // op.remove(key); //.remove(value名);
 
                 // console.log(examples);
 
@@ -150,37 +160,65 @@
 
         let sampleSelect = document.getElementById('samples');
         let checkButton = document.getElementById('checkButton');
-        checkButton.addEventListener('click',buttonClick);
+        let  = document.getElementById('deleteButton');
+        //選択した例文を localdeleteButtonstrageから呼び出して表示
+        checkButton.addEventListener('click',buttonCheck);
 
-        // 関数：checkボタン押下時の動き（sample文をlocalstrageから呼び出す）
-            function buttonClick(){
-                console.log("選択されているのは"+sampleSelect.value+"です");
+        // 選択した例文をlocaldeleteButtonstrageから削除
+        deleteButton.addEventListener('click',buttonDelete);
+
+
+
+        // 例文を呼び出す関数
+            function buttonCheck(){
+                // console.log("選択されているのは"+sampleSelect.value+"です");
 
                 // 表示中の例文を消す
                 $("#selectedSample>div").remove();
 
-                // 選択した例文を表示する
+                // 新たに選択した例文を表示する
                 var selectedSample = localStorage.getItem(sampleSelect.value);
                 const s =`<div>${selectedSample}</div>`
                 $("#selectedSample").append(s);
 
             }
 
+        // 例文を削除する関数
+
+            function buttonDelete(){
+                console.log("選択されているのは"+sampleSelect.value+"です");
+
+                // 表示中の例文を消す
+                $("#selectedSample>div").remove();
+
+                // localstrageから例文を削除する
+                var selectedSample = localStorage.removeItem(sampleSelect.value); //removeItem(キー名)
+
+                // 選択肢から例文を削除する
+                const key = sampleSelect.value;
+                const type =0;
+                createElement(key,type); 
+
+                alert("例文を削除しました");
+
+            }
 
 
-    // deleteボタンクリックイベント
 
-    //   $("#delete").on("click",function(){
 
-    //     let target = $("#samples").val();
-    //     console.log(target);
+    // // deleteボタンクリックイベント
+
+    //   $("#deleteButton").on("click",function(){
+
+    //     // let target = $("#samples").val();
+    //     console.log(sampleSelect);
 
     //     // 選択した例文をlocalstrageから削除する
-    //      var selectedSample = localStorage.removeItem(target); //removeItem(キー名)
+    //      var selectedSample = localStorage.removeItem(sampleSelect); //removeItem(キー名)
 
     //     // 選択肢からも削除する
     //      const type =0;
-    //      createElement(target,type);
+    //      createElement(sampleSelect,type);
 
     //     alert("例文を削除しました");
     //    })
