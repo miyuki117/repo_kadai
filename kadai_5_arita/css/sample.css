@@ -40,18 +40,14 @@ ul{
     margin: 0 3%;
     text-align: center;
 }
-.button li{
-    list-style-type:none;
-    border: 1px solid #666;
-    background-color: #fff;
-    display:table-cell;  /* 定義 */
-    cursor: pointer;
-    color:#0d7dfd;
+
+#login{
+    display: flex;
+    justify-content: right;
+    flex-direction: row;
+
 }
-.button li:hover{
-    background: #0d7dfd;
-    color:#fff;
-}
+
 
 .form_style {
     display: flex;
@@ -166,4 +162,23 @@ td{
 .sample
 {background-color: rgb(244, 241, 241);
     padding-bottom: 30px;
+}
+
+
+table{
+    margin: 20px 3%;
+    border:1px solid #8dc3f5;
+    width:96%;    
+}
+
+th{
+    width:30%;
+    font-size:16px;
+    background-color:#d0e7fc;
+    border-bottom: 1px solid #8dc3f5;
+}
+td{
+    font-size:12px;
+    background-color:rgb(241, 239, 239);
+    border-bottom: 1px solid #8dc3f5;
 }
