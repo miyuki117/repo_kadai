@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firebase_version9_Auth_RealtimeDB (初学者用サンプル)</title>
+<link rel="stylesheet" href="css/sample.css">
+
+<style>.remove:hover{background:aquamarine;}</style>
+</head>
+<header>
+    <h1>
+        <div>チームタスク管理</div>
+    </h1>
+</header>
+    
+<main>
+     <div class="title">
+
+            <div class="form_style">
+               <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">やること </label></li>
+                <li class="form_imput"> <input type="text" name="やること" id="toDo" required /></li>
+            </ul>
+            </div>
+
+            <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">締め切り日 </label></li>
+                <li class="form_imput"> <input type="text" name="締め切り日" id="deadline" required /></li>
+            </ul>
+            <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">優先順位 </label></li>
+                <li class="form_imput"> <input type="text" name="優先順位" id="priority" required /></li>
+            </ul>
+            <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">記入者 </label></li>
+                <li class="form_imput"> <input type="text" name="記入者" id="written" required /></li>
+            </ul>
+      
+    
+            <!-- ボタン -->
+            <input type="button" value="保存" id="checkButton"/>
+
+
+            <!-- <input type="button" value="delete" id="deleteButton"/> -->
+    
+           <!-- テーブルエリア -->
+            <table id="list">
+                <!-- ここに追加データが挿入される -->
+                <th>No.</th>
+                <th>担当者</th>
+                <th>締め切り</th>
+                <th>やること</th>
+                <th><input type="button" value="更新" id="updateButton"/></th>
+                <th><input type="button" value="削除" id="deleteButton"/></th>
+
+            </table>    
+        
+    
+    
+     </div>        
+    
+        
+</main>
+    
+
+
+    <body>
+    <button id="out">ログアウト</button>
+    <h1 id="status"> Login... </h1>
+    <!-- コンテンツ表示画面 -->
+    <div>
+        <div>
+            名前：<span id="uname"></span><br>
+            <img src="" id="prof">
+        </div>
+        <div>
+            <select id="title">
+                <option value="memo1">memo1</option>
+                <option value="memo2">memo2</option>
+                <option value="memo3">memo3</option>
+            </select>
+        </div>
+        <div>
+            <textarea id="text" cols="30" rows="10"></textarea>
+            <button id="send">送信</button>
+        </div>
+    </div>
+    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="module">
+
+
+    //スライドして表示させる 
+    $("main").slideDown();
+
+
+//###############################################
+// 必要なJSを読み込み
+//###############################################
+import { initializeApp } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, onChildAdded, remove, onChildRemoved } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-auth.js";
+ 
+
+//###############################################
+//FirebaseConfig [ KEYを取得して設定！！ ]
+//###############################################
+const firebaseConfig = {
+      apiKey: "AIzaSyAtNOzaHZgNnBCeASzjwP71lqDwzQAC6LM", 
+      authDomain: "gsdemo-77ccd.firebaseapp.com",
+      projectId: "gsdemo-77ccd",
+      storageBucket: "gsdemo-77ccd.appspot.com",
+      messagingSenderId: "258489868335",
+      appId: "1:258489868335:web:e6bcaee0f31fdf5c9626da"
+    };
+    const app = initializeApp(firebaseConfig);
+
+
+//###############################################
+//Firebase-RealtimeDatabase接続
+//###############################################
+const db  = getDatabase(app); //RealtimeDBに接続
+
+
+//###############################################
+//GoogleAuth用
+//###############################################
+const provider = new GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+const auth = getAuth();
+
+
+//###############################################
+//Loginしていれば処理します
+//###############################################
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        //ユーザー情報取得できます
+        if (user !== null) {
+            user.providerData.forEach((profile) => {
+                //Login情報取得
+                $("#uname").text(profile.displayName);
+                $("#prof").attr("src",profile.photoURL);
+                // console.log("Sign-in provider: " + profile.providerId);
+                // console.log("Provider-specific UID: " + profile.uid);
+                // console.log("Email: " + profile.email);
+                // console.log("Photo URL: " + profile.photoURL);
+            });
+            $("#status").fadeOut(500);
+        }
+
+        //データ登録(Click)
+        $("#checkButton").on("click",function() {
+            const msg = {
+                toDo: $("#toDo").val(),
+                deadline: $("#deadline").val(),
+                priority: $("#priority").val(),
+                // toDo: $("#toDo").val()
+            }
+            const dbRef = ref( db, "toDoList/"+uid ); //RealtimeDB内の"toDoList"を使う
+            const newPostRef =push(dbRef); //Pushできる状況を作って（PUniqeIDを発行）
+            set(newPostRef,msg); //DBに値をセットする（set(ID名，値)）
+        });
+
+
+        //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+        $("#title").on("change",function(){
+            const dbRef = ref( db, "users/"+uid+"/memo/"+$(this).val() ); //RealtimeDB内の"chat"を使う
+            onValue(dbRef, function(data){   
+                const msg  = data.val();    //オブジェクトデータを取得し、変数msgに代入
+                console.log(msg);
+                // const key  = data.key;      //データのユニークキー（削除や更新に使用可能）
+                $("#text").val(msg.text);
+            });
+        });
+
+    } else {
+        _redirect();  // User is signed out
+    }
+});
+
+
+//###############################################
+//Logout処理
+//###############################################
+$("#out").on("click", function () {
+    // signInWithRedirect(auth, provider);
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        _redirect();
+    }).catch((error) => {
+        // An error happened.
+        console.error(error);
+    });
+});
+
+
+//###############################################
+//Login画面へリダイレクト(関数作成)
+//###############################################
+function _redirect(){
+    location.href="login.html";
+}
+
+
+
+</script>
+</body>
+</html>
