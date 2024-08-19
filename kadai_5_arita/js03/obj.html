@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //オブジェクト変数 は、変数をひとまとまりにする
+        const personal = {
+            name:"Arita",
+            email:"test@example.com",
+            age:20,
+            date:"20240101",
+            sum:function(){
+                alert("sum");
+            } ///オブジェクト内に関数も登録することができる
+        }
+        console.log(personal.name); //オブジェクト.xxで、オブジェクトの中のxxを指定できる
+        personal.sum();  //オブジェクト内の関数呼び出し
+
+    </script>
+</body>
+</html>

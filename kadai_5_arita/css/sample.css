@@ -4,11 +4,12 @@ body{
     text-align:left;
     font-size: 16px;
     width:100%;
+    background-color: beige;
 }
 
 /* ヘッダー */
 header{
-    background-color: #8dc3f5;
+    /* background-color: #8dc3f5; */
     border-bottom: 1px solid #ccc;
     padding-bottom: 30px;
 }
@@ -39,7 +40,7 @@ h2{
 }
 
 #title{
-    color: red;
+    color: green;
 }
 
 #login{
@@ -64,14 +65,25 @@ h2{
     margin-top: 50px;
     width: 50%;
     text-align: left;
+    padding-left: 0;
 }
 
     /* メニュー要素の幅を50pxにする */
 .main-nav li{
     /* margin-left: 50px; */
-    justify-content: space-between;
+    justify-content: center;
+    /* display: flex;
+    flex-direction: row; */
+    /* background-color: yellow; */
     font-weight: bolder;
+    list-style: none;
+    color:rgb(236, 135, 4);
 
+}
+
+.main-nav li a{
+    font-size: smaller;
+    padding-left:30px ;
 }
 
 
@@ -87,19 +99,34 @@ main{
 .question{
     display: flex;
     justify-content: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 100px;
 
-    background-color: yellow;
-    border-top: 1px solid red;
-    /* border-bottom:1px solid red; */
+}
+
+#list{
+    padding-left: 0;
+    border-bottom: 1px solid #ccc;
     padding-bottom: 30px;
 
 }
 
+#list li{
+    list-style: none;
+    text-align: left;
+}
 
-/* 質問リスト */
-/* #question_list_title{
-    color: blue;
-} */
+#kaitou{
+    color: red;
+    font-weight: bold;
+
+}
+
+
+
+
+
+
 
 
 footer{
@@ -132,8 +159,7 @@ ul{
 .form_style {
     /* text-align: center; */
     margin:0 auto;
-    border: 1px solid green;
-
+    /* border: 1px solid green; */
   }
 
 .form_ul {
@@ -151,7 +177,7 @@ ul{
     padding-right: 0px;
     font-size: 15px;
     line-height: 36px;
-    border: 1px solid blue;
+    border: 1px solid gray;
 
 
   }
@@ -166,36 +192,25 @@ ul{
     padding-right: 0px;
     font-size: 15px;
     line-height: 36px;
-    border: 1px solid blue;
+    border: 1px solid gray;
+  }
+
+  #form_button{
+    display: flex;
+    justify-content: right;
+  }
+
+  #form_button input{
+    margin-right: 3px;
   }
 
 
-/* #key{
-    margin:0 3%;
-    width: 95%;
-    font-size:80%;
-    background-color: #e1efff;
-    box-shadow: 3px 3px 3px 3px #555;
-} */
-
 table{
     margin: 20px 3%;
-    border:1px solid #8dc3f5;
+    /* border:1px solid #8dc3f5; */
     width:96%;    
 }
 
-th{
-    width:30%;
-    font-size:16px;
-    background-color:#d0e7fc;
-    border-bottom: 1px solid #8dc3f5;
-}
-
-td{
-    font-size:12px;
-    background-color:rgb(241, 239, 239);
-    border-bottom: 1px solid #8dc3f5;
-}
 
 
 .hidden {

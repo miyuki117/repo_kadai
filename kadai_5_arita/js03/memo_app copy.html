@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Firebase_version9_Auth_RealtimeDB (初学者用サンプル)</title>
+<link rel="stylesheet" href="css/sample.css">
+
+<style>.remove:hover{background:aquamarine;}</style>
+</head>
+<header>
+    <h1>
+        <div>チームの知恵袋</div>
+    </h1>
+
+    <h1 id="status"> Login... </h1>
+    <!-- コンテンツ表示画面 -->
+    <div id="login">
+        <div>
+           <div> 名前：<span class="uname"></span></div>
+            <div><img src="" id="prof"></div>
+            <button id="out">ログアウト</button>
+
+        </div>
+
+    </div>
+
+    <nav>
+        <ul class="main-nav">
+        <!-- ★リンクで飛べるようにする -->
+        <li><a href="#question_form">質問する</a></li>
+        <li><a href="#question_list">質問に答える、質問を見る</a></li>
+        </ul>
+   </nav>
+
+
+</header>
+    
+<main>
+     <div class="title">
+
+        <h1 id="question_form">記入エリア</h1>
+
+            <!-- <div class="form_style">
+                <ul class="form_ul">
+                 <li class="form_title"> <label for="name_kana">1.項番 </label></li>
+                 <li class="form_imput" id="number"></li>
+                </ul>
+    
+            </div> -->
+
+            <div class="form_style">
+                <ul class="form_ul">
+                 <li class="form_title"> <label for="name_kana">5.やること </label></li>
+                 <li class="form_imput"> <input type="text" name="やること" id="toDo" required /></li>
+             </ul>
+             </div>
+ 
+
+            <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">2.記入者 </label></li>
+                <li class="form_imput uname"> </li>
+            </ul>
+
+            <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">3.記入日 </label></li>
+                <li class="form_imput" id="date"></li>
+            </ul>
+
+            <!-- <ul class="form_ul">
+                <li class="form_title"> <label for="name_kana">4.締め切り日 </label></li>
+                <li class="form_imput"> <input type="date" name="締め切り日" id="deadline" required /></li>
+            </ul>
+ -->
+      
+    
+            <!-- ボタン -->
+            <input type="button" value="保存" id="checkButton"/>
+
+
+            <!-- <input type="button" value="delete" id="deleteButton"/> -->
+    
+           <!-- テーブルエリア -->
+           <h1 id="question_list">記録エリア</h1>
+
+            <table id="list">
+                <!-- ここに追加データが挿入される -->
+            <tr>
+                <th>1.項番</th>
+                <th>2.記入者</th>
+                <th>3.記入日</th>
+                <th>4.締め切り日</th>
+                <th>5.やること</th>
+            </tr>
+
+            </table>    
+        
+    
+    
+     </div>        
+    
+        
+</main>
+    
+
+
+    <body>
+    
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="module">
+
+
+    //スライドして表示させる 
+    $("main").slideDown();
+
+
+    //曜日配列
+    let eMonth = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let week   = ["日", "月", "火", "水", "木", "金", "土"];
+
+    //日時取得
+    let now = new Date();            //日付取得準備（必須）！！
+    let year = now.getFullYear();    //年
+    let month = now.getMonth() + 1;  //月+１を足す
+    let date = now.getDate();        //日
+    let day = now.getDay();          //曜日（数値）
+    let h = now.getHours();          //時
+    let m = now.getMinutes();        //分
+    let s = now.getSeconds();        //秒
+
+    //日時表示文字列の作成
+    // let str = year + "-" + month + "-" + date + "(" + week[day] + ") " + h + ":" + m + ":" + s;
+    let str = year + "-" + month + "-" + date + "(" + week[day] + ") " ;
+
+
+    //div要素id属性mainを指定
+    $('#date').html(str);
+
+
+
+
+//###############################################
+// 必要なJSを読み込み
+//###############################################
+import { initializeApp } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+import { getDatabase, ref, push, set, onValue, onChildAdded, remove, onChildRemoved } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/9.13.0/firebase-auth.js";
+ 
+
+//###############################################
+//FirebaseConfig [ KEYを取得して設定！！ ]
+//###############################################
+const firebaseConfig = {
+      apiKey: "AIzaSyAtNOzaHZgNnBCeASzjwP71lqDwzQAC6LM", 
+      authDomain: "gsdemo-77ccd.firebaseapp.com",
+      projectId: "gsdemo-77ccd",
+      storageBucket: "gsdemo-77ccd.appspot.com",
+      messagingSenderId: "258489868335",
+      appId: "1:258489868335:web:e6bcaee0f31fdf5c9626da"
+    };
+    const app = initializeApp(firebaseConfig);
+
+
+//###############################################
+//Firebase-RealtimeDatabase接続
+//###############################################
+const db  = getDatabase(app); //RealtimeDBに接続
+
+
+//###############################################
+//GoogleAuth用
+//###############################################
+const provider = new GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+const auth = getAuth();
+
+
+//###############################################
+//Loginしていれば処理します
+//###############################################
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+       
+        //ユーザー情報取得できます
+        if (user !== null) {
+            user.providerData.forEach((profile) => {
+                //Login情報取得
+                $(".uname").text(profile.displayName);
+                $("#prof").attr("src",profile.photoURL);
+                // console.log("Sign-in provider: " + profile.providerId);
+                // console.log("Provider-specific UID: " + profile.uid);
+                // console.log("Email: " + profile.email);
+                // console.log("Photo URL: " + profile.photoURL);
+            });
+            $("#status").fadeOut(500);
+        }
+
+        let i=1; //リストの登録番号
+        $("#number").html(i); //リストの登録番号を表示させる
+
+        const dbRef = ref( db, "users/"+uid+"/todo"); //RealtimeDB内の"users" ★
+        // const dbRef = ref( db, "toDoList/"+uid+"/memo/"+$(this).val() ); //RealtimeDB内の"users"を使う
+        // const dbRef = ref( db, "toDoList/"+uid+`/data_${i}/`); //RealtimeDB内の"toDoList"を使う
+       
+
+         //データ登録(Click)
+        $("#checkButton").on("click",function() {
+            i = i+1;
+            $("#number").html(i);
+            console.log("現在"+i+"回目の処理です。");
+
+            let date =$("#date").val();
+            console.log(str);
+
+            let uname = $(".uname").text(profile.displayName);
+
+
+            
+            const msg = {
+                number: i,                      //1.項番
+                name:uname,         //2.記入者
+                date: str,          //3.記入日
+                deadline: $("#deadline").val(), //4.締め切り日
+                toDo: $("#toDo").val()          //5.やること
+
+            }
+
+            const newPostRef =push(dbRef); //Pushできる状況を作って（PUniqeIDを発行）
+            set(newPostRef,msg); //DBに値をセットする（set(ID名，値)）
+
+        });
+
+
+        // 受信処理
+         onChildAdded(dbRef, function(data){
+
+            const msg = data.val(); //オブジェクト変数で受け取る
+            const key = data.key; //このデータのUniqueIDを取得（更新削除に必須）
+            //縦に割って書くとメンテしやすい
+            // console.log(msg);
+
+            let h ='<div id="'+key+'">';
+                // h += '<br>';
+                h += '<tr>';
+                h +='<td>'+msg.number+'</td>'       //1.項番
+                // h += '<br>';
+                h +='<td>ありた</td>'         //2.記入者
+                // h += '<br>';
+                h +='<td>'+msg.date+'</td>'         //3.記入日
+                // h += '<br>';
+                h +='<td>'+msg.deadline+'</td>'     //4.締め切り日
+                // h += '<br>';
+                h += '<span contentEditable="true" id="'+key+'_update">';
+                h += '<td>'+msg.toDo+'</td>';       //5.やること
+                // h += '<br>';
+                h +=  '</span>';
+                // h += '<span contentEditable="true" id="'+key+'_update">'+msg.toDO+'</span>';
+                h += '<td><button class="remove" data-key="'+key+'">削除</button></td>';
+                h += '<td><button class="update" data-key="'+key+'">更新</button></td>';
+                h += '</tr>';
+                h += '</div>'
+
+
+                $("#list").append(h);
+
+            // スクロールを一番下に持ってくる
+            // 参考：https://zenn.dev/teba_eleven/articles/77ed17098e28d7
+            var selectTextarea = document.getElementById('list');
+            selectTextarea.scrollTop = selectTextarea.scrollHeight;
+            console.log(selectTextarea);
+            });
+
+
+        // 削除イベント
+        $("#list").on("click",".remove", function(){ //output領域内のremoveクラスが実行されたら
+            const key = $(this).attr("data-key"); //this=removeクラスが押された場所のdata-keyを取得
+            const remove_item = ref( db, "users/"+uid+"/todo/"+key); //realtimedb内の指定キーで＾他を削除する
+            remove(remove_item);
+        });
+
+
+         // 更新イベント ★
+         $("#list").on("click",".update", function(){ //output領域内のremoveクラスが実行されたら
+            const key = $(this).attr("data-key"); //this=updateクラスが押された場所のdata-keyを取得
+            update(ref( db, "users/"+uid+"/todo/"+key),{
+                toDo: $("#"+key+'_update').html()
+            });
+        });
+
+         // Realtimedatabaseの削除処理
+             onChildRemoved(dbRef, (data) => {
+             $("#"+data.key).remove(); //DOM操作関数（対象を削除）
+            
+            })
+
+        // Realtimedatabaseの更新処理
+            onChildChanged(dbRef,(data) =>{
+                $("#"+data.key+'_update').html(data.val().toDo); //data.text内の値を更新箇所に＃_updateに上書きする
+                $("#"+data.key+'_update').fadeOut(800).fadeIn(800);
+            })
+
+
+    } else {
+        _redirect();  // User is signed out
+    }
+});
+
+
+//###############################################
+//Logout処理
+//###############################################
+$("#out").on("click", function () {
+    // signInWithRedirect(auth, provider);
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        _redirect();
+    }).catch((error) => {
+        // An error happened.
+        console.error(error);
+    });
+});
+
+
+//###############################################
+//Login画面へリダイレクト(関数作成)
+//###############################################
+function _redirect(){
+    location.href="login.html";
+}
+
+
+
+</script>
+</body>
+</html>
