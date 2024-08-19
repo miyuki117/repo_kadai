@@ -149,7 +149,7 @@ ul{
     display:table;  /*定義*/
     table-layout: fixed;
     width:96%;
-    font-size: 80%;
+    font-size: 100%;
     margin: 0 3%;
     text-align: center;
 }
