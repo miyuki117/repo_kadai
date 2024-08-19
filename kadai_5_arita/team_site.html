@@ -28,8 +28,10 @@
         <nav>
             <ul class="main-nav">
             <!-- ★リンクで飛べるようにする -->
-                <li><a href="#question_form">質問する</a></li>
-                <li><a href="#question_list">質問に答える、質問を見る</a></li>
+                <li>１．質問する
+                    <br><a href="#question_form">質問BOXへ</a></li>
+                <li>２．質問に答える、質問を見る
+                    <br><a href="#question_list">質問リストへ</a></li>
             </ul>
          </nav>
     </div>
@@ -45,25 +47,27 @@
 
         <div class="form_style">
                 <ul class="form_ul">
-                 <li class="form_title"> <label for="name_kana">質問: </label></li>
+                 <li class="form_title"> <label for="name_kana">質問 </label></li>
                  <li class="form_input"> <input type="text" name="質問" id="question" required /></li>
                 </ul>
             
  
 
             <ul class="form_ul">
-                <li class="form_title"> <label for="name_kana">記入者: </label></li>
+                <li class="form_title"> <label for="name_kana">記入者 </label></li>
                 <li class="form_input uname form_title"> </li>
             </ul>
 
             <ul class="form_ul">
-                <li class="form_title"> <label for="name_kana">記入日: </label></li>
+                <li class="form_title"> <label for="name_kana">記入日</label></li>
                 <li class="form_input" id="date"></li>
             </ul>
 
             <!-- ボタン -->
-            <input type="button" value="クリア" id="clearButton"/>
-            <input type="button" value="保存" id="saveButton"/>
+             <div id="form_button">
+                <input type="button" value="クリア" id="clearButton"/>
+                <input type="button" value="保存" id="saveButton"/>
+            </div>
 
         </div>
 
@@ -75,20 +79,7 @@
 
     <h2 id="question_list">質問リスト</h2>
 
-    <div  class="question">
-           <!-- テーブルエリア -->
-        
-
-            <table id="list">
-                <!-- ここに追加データが挿入される -->
-            <tr>
-                <th>1.項番</th>
-                <th>5.質問</th>
-                <th>2.記入者</th>
-                <th>3.記入日</th>
-            </tr>
-            </table>   
-            
+    <div   id="list">
     </div>
         
     
@@ -131,6 +122,18 @@
 
     //div要素id属性mainを指定
     $('#date').html(str);
+
+     // 関数：textareaの中身を削除する
+     function clearTextarea(){
+        let textareaForm = document.getElementById("question");
+        textareaForm.value = '';
+        }
+
+    //クリアBTNクリックイベント
+    $("#clearButton").on("click",function() {
+    // $("#question>").remove();
+    clearTextarea(); //テキストエリア内を空にする
+    });
 
 
 
@@ -201,6 +204,8 @@ onAuthStateChanged(auth, (user) => {
         $("#number").html(i); //リストの登録番号を表示させる
 
         const dbRef = ref( db, "users/"+uid+"/todo"); //RealtimeDB内の"users" ★
+        // const dbRef = ref( db, "users/questions"); //RealtimeDB内の"users" 
+
         // const dbRef = ref( db, "toDoList/"+uid+"/memo/"+$(this).val() ); //RealtimeDB内の"users"を使う
         // const dbRef = ref( db, "toDoList/"+uid+`/data_${i}/`); //RealtimeDB内の"toDoList"を使う
        
@@ -214,17 +219,30 @@ onAuthStateChanged(auth, (user) => {
             let date =$("#date").val();
             console.log(str);
 
+            let uname =$(".uname").html();
+            console.log(uname);
+
+
+
             
             const msg = {
                 number: i,                      //項番
                 question: $("#question").val(),        //質問
+                name:uname,         //2.記入者
                 // name:$(".uname").val(),         //2.記入者
-                date: str          //3.記入日
+                date: str,          //3.記入日
+                answer: ""
 
             }
 
             const newPostRef =push(dbRef); //Pushできる状況を作って（PUniqeIDを発行）
             set(newPostRef,msg); //DBに値をセットする（set(ID名，値)）
+
+            alert("リストに追加されました");
+
+            clearTextarea(); //テキストエリア内を空にする
+
+
 
         });
 
@@ -239,26 +257,28 @@ onAuthStateChanged(auth, (user) => {
 
             let h ='<div id="'+key+'">';
                 // h += '<br>';
-                h += '<tr>';
-                h +='<td>'+msg.number+'</td>'       //1.項番
+                h += '<ul>';
+                h +='<li>No.'+msg.number+'</li>'       //1.項番
                 // h += '<br>';
-                h += '<td>'+msg.question+'</td>';       //質問
+                h += '<li>質問：'+msg.question+'</li>';       //質問
                 // h += '<br>';
-                h +='<td>ありた</td>'         //記入者
+                h += '<li>記入者：'+msg.name+'</li>';       //記入者
                 // h += '<br>';
-                h +='<td>'+msg.date+'</td>'         //記入日
+                h +='<li>記入日:'+msg.date+'</li>'         //記入日
                 // h += '<br>';
-                h += '<span contentEditable="true" id="'+key+'_update">';
-                h +=  '</span>';
-                h += '<td><button class="remove" data-key="'+key+'">回答する</button></td>';
-                h += '</tr>';
+                h += '<span contentEditable="true"id="'+key+'_update" >';
+                h +='<li id="kaitou"> 回答:'+msg.answer+'</li>'         //回答
+                h +=  '</span>'; //回答
+                h += '<td><button class="update" data-key="'+key+'">回答する</button></td>';
+                h += '<td><button class="remove" data-key="'+key+'">削除</button></td>';
+                h += '</ul>';
                 h += '</div>'
 
 
                 $("#list").append(h);
 
             // // スクロールを一番下に持ってくる
-            // // 参考：https://zenn.dev/teba_eleven/articles/77ed17098e28d7
+            // // 参考：https://zenn.deid="'+key+'_update"v/teba_eleven/articles/77ed17098e28d7
             // var selectTextarea = document.getElementById('list');
             // selectTextarea.scrollTop = selectTextarea.scrollHeight;
             // console.log(selectTextarea);
@@ -269,18 +289,45 @@ onAuthStateChanged(auth, (user) => {
 
         // 削除イベント
         $("#list").on("click",".remove", function(){ //output領域内のremoveクラスが実行されたら
+            
+            // 削除の時にyes/no判定をする
+            // 参考：https://magazine.techacademy.jp/magazine/48837
+            let checkDeleteFlg = window.confirm('削除を実行してもよろしいですか？');
+
+            if(checkDeleteFlg) {
             const key = $(this).attr("data-key"); //this=removeクラスが押された場所のdata-keyを取得
             const remove_item = ref( db, "users/"+uid+"/todo/"+key); //realtimedb内の指定キーで＾他を削除する
+            // const remove_item = ref( db, "users/questions/"+key); //realtimedb内の指定キーで＾他を削除する
+
             remove(remove_item);
+            }else{
+                alert("キャンセルしました")
+            }
+
         });
 
 
-         // 更新イベント
+         // 回答を追加するイベント
          $("#list").on("click",".update", function(){ //output領域内のremoveクラスが実行されたら
-            const key = $(this).attr("data-key"); //this=removeクラスが押された場所のdata-keyを取得
+            const key = $(this).attr("data-key"); //this=updateクラスが押された場所のdata-keyを取得
+
+            // let checkUpdateFlg = window.prompt('回答を記入してください');
+            // // console.log(checkUpdateFlg);
+
             update(ref( db, "users/"+uid+"/todo/"+key),{
-                toDo: $("#"+key+'_update').html()
+                answer: $("#"+key+'_update').html()
             });
+
+
+            // if(checkUpdateFlg) {
+            // const key = $(this).attr("data-key"); //this=rupdateクラスが押された場所のdata-keyを取得
+            // update(ref( db, "users/"+uid+"/todo/"+key),{
+            //     answer: checkUpdateFlg
+            // });
+
+            // }else{
+            //     alert("キャンセルしました")
+            // }
         });
 
          // Realtimedatabaseの削除処理
@@ -291,7 +338,7 @@ onAuthStateChanged(auth, (user) => {
 
         // Realtimedatabaseの更新処理
             onChildChanged(dbRef,(data) =>{
-                $("#"+data.key+'_update').html(data.val().toDo); //data.text内の値を更新箇所に＃_updateに上書きする
+                $("#"+data.key+'_update').html(data.val().answer); //data.text内の値を更新箇所に＃_updateに上書きする
                 $("#"+data.key+'_update').fadeOut(800).fadeIn(800);
             })
 

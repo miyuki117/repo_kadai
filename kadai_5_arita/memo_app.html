@@ -11,7 +11,7 @@
 </head>
 <header>
     <h1>
-        <div>タスク管理</div>
+        <div>チームの知恵袋</div>
     </h1>
 
     <h1 id="status"> Login... </h1>
@@ -26,20 +26,37 @@
 
     </div>
 
+    <nav>
+        <ul class="main-nav">
+        <!-- ★リンクで飛べるようにする -->
+        <li><a href="#question_form">質問する</a></li>
+        <li><a href="#question_list">質問に答える、質問を見る</a></li>
+        </ul>
+   </nav>
+
+
 </header>
     
 <main>
      <div class="title">
 
-        <h1>記入エリア</h1>
+        <h1 id="question_form">記入エリア</h1>
 
-            <div class="form_style">
+            <!-- <div class="form_style">
                 <ul class="form_ul">
                  <li class="form_title"> <label for="name_kana">1.項番 </label></li>
                  <li class="form_imput" id="number"></li>
                 </ul>
     
-            </div>
+            </div> -->
+
+            <div class="form_style">
+                <ul class="form_ul">
+                 <li class="form_title"> <label for="name_kana">5.やること </label></li>
+                 <li class="form_imput"> <input type="text" name="やること" id="toDo" required /></li>
+             </ul>
+             </div>
+ 
 
             <ul class="form_ul">
                 <li class="form_title"> <label for="name_kana">2.記入者 </label></li>
@@ -51,17 +68,11 @@
                 <li class="form_imput" id="date"></li>
             </ul>
 
-            <ul class="form_ul">
+            <!-- <ul class="form_ul">
                 <li class="form_title"> <label for="name_kana">4.締め切り日 </label></li>
                 <li class="form_imput"> <input type="date" name="締め切り日" id="deadline" required /></li>
             </ul>
-
-            <div class="form_style">
-               <ul class="form_ul">
-                <li class="form_title"> <label for="name_kana">5.やること </label></li>
-                <li class="form_imput"> <input type="text" name="やること" id="toDo" required /></li>
-            </ul>
-            </div>
+ -->
       
     
             <!-- ボタン -->
@@ -71,7 +82,7 @@
             <!-- <input type="button" value="delete" id="deleteButton"/> -->
     
            <!-- テーブルエリア -->
-           <h1>記録エリア</h1>
+           <h1 id="question_list">記録エリア</h1>
 
             <table id="list">
                 <!-- ここに追加データが挿入される -->
@@ -209,10 +220,13 @@ onAuthStateChanged(auth, (user) => {
             let date =$("#date").val();
             console.log(str);
 
+            let uname = $(".uname").text(profile.displayName);
+
+
             
             const msg = {
                 number: i,                      //1.項番
-                // name:$(".uname").val(),         //2.記入者
+                name:uname,         //2.記入者
                 date: str,          //3.記入日
                 deadline: $("#deadline").val(), //4.締め切り日
                 toDo: $("#toDo").val()          //5.やること
@@ -273,9 +287,9 @@ onAuthStateChanged(auth, (user) => {
         });
 
 
-         // 更新イベント
+         // 更新イベント ★
          $("#list").on("click",".update", function(){ //output領域内のremoveクラスが実行されたら
-            const key = $(this).attr("data-key"); //this=removeクラスが押された場所のdata-keyを取得
+            const key = $(this).attr("data-key"); //this=updateクラスが押された場所のdata-keyを取得
             update(ref( db, "users/"+uid+"/todo/"+key),{
                 toDo: $("#"+key+'_update').html()
             });
