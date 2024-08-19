@@ -200,7 +200,7 @@ onAuthStateChanged(auth, (user) => {
             $("#status").fadeOut(500);
         }
 
-        let i=1; //リストの登録番号
+        let i=0; //リストの登録番号
         $("#number").html(i); //リストの登録番号を表示させる
 
         const dbRef = ref( db, "users/"+uid+"/todo"); //RealtimeDB内の"users" ★
