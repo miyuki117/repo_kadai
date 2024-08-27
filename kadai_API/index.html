@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界の天気予報</title>
+    <style>
+        #view{
+            padding: 10px;
+            border: 4px solid #6f28bb;
+            width: 50%px;
+            background-color: aliceblue;
+            height:500px;
+            overflow: auto;
+        }
+        img{
+            width:50px;
+        }
+        #view>div{
+            border-bottom: 1px dotted #3838ab;
+            font-size:medium;
+        }
+        .bold{
+            font-weight: bold;
+        }
+        h2{
+            font-size:x-large;
+            color:#f1071e;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>
+          オリンピック都市  5日間の天気
+        </h1>
+        <div id="area">
+            <button id="LA">ラスベガス</button>
+            <button id="Paris">パリ</button>
+            <button id="Tokyo">東京</button>
+        </div>
+        <!-- <button id="submit">送信</button> -->
+        <!-- <input type="button" value="送信" id="submitButton"/> -->
+
+        <div id="view"></div>
+    </div>
+
+
+     <!-- これをバッククオートの中に入れる↓(<script>タグの中では打てないため)-->
+    <!-- div>div*5エンター -->
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
+    <script>
+        //＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+        //MAP表示処理 (自分で表示したい場所を設定)
+        //＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+        let key ="a6ec85d634ebd39d6955dea8bbb40624";  //***自分のKEYを！！！！！！！！！！！！！！！***
+        let lat;  //緯度
+        let lon;  //経度
+        let icon ="http://openweathermap.org/img/wn/"; //icon
+
+
+        const area = document.getElementById('area').text;
+       
+        $('#LA').on("click",function (){
+            lat="36.177774846449914";  //緯度
+            lon="115.17781639403448";  //経度
+        const url = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&appid='+key+'&lang=ja';
+
+
+        // APIの送受信情報を取得   
+        $.ajax({
+            url:url, //
+            type:'get', //httpsにデータを付ける
+            cache:false, //キャッシュしない（新しいデータが受け取れなくなる恐れあるため）
+            dataType:'json' //戻し値のデータ形式"json"
+
+        }).done(function(data){ //成功したら実行
+            console.log(data);
+            let html = "";
+            for(let i=0; i<data.list.length; i++){ //データリストの配列文繰り返し
+                html +=`
+                    <div>
+                        <div>時刻：${data.list[i].dt_txt}</div>
+                        <div>風速：${data.list[i].wind.speed}</div>
+                        <div>天気：${data.list[i].weather[0].description}</div>
+                        <div>降水確率:${data.list[i].pop*100}</div>
+                        <div><img src="${icon+data.list[i].weather[0].icon}@2x.png"></div>
+                    </div>
+                `; //shift+@でバッククオート
+
+            }
+
+            $("#view>div").remove();
+            $("#view").append(html);
+        });
+
+        })
+
+
+        $('#Paris').on("click",function (){
+
+            lat="48.854671454180874";  //緯度
+            lon="2.3497672405368006";  //経度
+
+            const url = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&appid='+key+'&lang=ja';
+
+
+// APIの送受信情報を取得   
+$.ajax({
+    url:url, //
+    type:'get', //httpsにデータを付ける
+    cache:false, //キャッシュしない（新しいデータが受け取れなくなる恐れあるため）
+    dataType:'json' //戻し値のデータ形式"json"
+
+}).done(function(data){ //成功したら実行
+    console.log(data);
+    let html = "";
+    for(let i=0; i<data.list.length; i++){ //データリストの配列文繰り返し
+        html +=`
+            <div>
+                <div>時刻：${data.list[i].dt_txt}</div>
+                <div>風速：${data.list[i].wind.speed}</div>
+                <div>天気：${data.list[i].weather[0].description}</div>
+                <div>降水確率:${data.list[i].pop*100}</div>
+                <div><img src="${icon+data.list[i].weather[0].icon}@2x.png"></div>
+            </div>
+        `; //shift+@でバッククオート
+
+        }
+
+        $("#view>div").remove();
+        $("#view").append(html);
+
+        });
+     })
+
+
+        $('#Tokyo').on("click",function (){
+            lat="35.670147566465864";  //緯度
+            lon="139.7555788470296";  //経度
+
+            const url = 'https://api.openweathermap.org/data/2.5/forecast?lat='+lat+'&lon='+lon+'&appid='+key+'&lang=ja';
+
+
+// APIの送受信情報を取得   
+$.ajax({
+    url:url, //
+    type:'get', //httpsにデータを付ける
+    cache:false, //キャッシュしない（新しいデータが受け取れなくなる恐れあるため）
+    dataType:'json' //戻し値のデータ形式"json"
+
+}).done(function(data){ //成功したら実行
+    console.log(data);
+    let html = "";
+    for(let i=0; i<data.list.length; i++){ //データリストの配列文繰り返し
+        html +=`
+            <div>
+                <div>時刻：${data.list[i].dt_txt}</div>
+                <div>風速：${data.list[i].wind.speed}</div>
+                <div>天気：${data.list[i].weather[0].description}</div>
+                <div>降水確率:${data.list[i].pop*100}</div>
+                <div><img src="${icon+data.list[i].weather[0].icon}@2x.png"></div>
+            </div>
+        `; //shift+@でバッククオート
+
+    }
+
+    $("#view>div").remove();
+    $("#view").append(html);
+
+        });
+     })
+
+
+</script>
+</body>
+</html>
