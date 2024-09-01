@@ -7,6 +7,7 @@
 <form action="write.php" method="post">
 	お名前: <input type="text" name="name">
 	EMAIL: <input type="text" name="mail">
+	今日の朝ごはん：<input type="text" name="breakfast">
 	<input type="submit" value="送信">
 </form>
 <ul>
