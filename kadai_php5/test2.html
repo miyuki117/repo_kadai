@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Menu Example</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://unpkg.com/@material/menu/dist/mdc.menu.css">
+  <link rel="stylesheet" href="https://unpkg.com/@material/list/dist/mdc.list.css">
+
+
+</head>
+<body>
+  <button id="menu-button" class="mdc-button mdc-button--raised">
+    <span class="mdc-button__label">Open Menu</span>
+  </button>
+
+  <div class="mdc-menu mdc-menu-surface" id="menu">
+    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+      <li class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__text">Item 1</span>
+      </li>
+      <li class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__text">Item 2</span>
+      </li>
+      <li class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__text">Item 3</span>
+      </li>
+    </ul>
+  </div>
+
+
+  <script type="module" src="script.js"></script>
+  <script src="https://unpkg.com/@material/menu/dist/mdc.menu.js"></script>
+  <script src="https://unpkg.com/@material/list/dist/mdc.list.js"></script>
+  <!-- <script src="script.js"></script> -->
+
+</body>
+</html>

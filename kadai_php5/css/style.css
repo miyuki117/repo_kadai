@@ -1,0 +1,23 @@
+.wrap{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4%;
+}
+
+
+
+ul {
+ list-style: none;
+}
+
+#style {
+ margin: 10px;
+ padding-left: 10px;
+ height: auto;
+ width: 600px;
+}
+
+.style {
+    margin-left: 50px;
+    margin-top: 50px;
+}
